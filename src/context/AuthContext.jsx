@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext } from 'react';
 
 const AuthContext = createContext();
 
@@ -11,21 +11,21 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }) => {
-  // 1. INICIALIZACIÓN: Leemos de localStorage antes de definir el estado
+  // 1. INICIALIZACIÓN: Leemos de localStorage con la NUEVA LLAVE
   const [isAdmin, setIsAdmin] = useState(() => {
-    const savedSession = localStorage.getItem('isAdmin');
+    const savedSession = localStorage.getItem('thanos_is_admin'); // <--- NUEVA LLAVE
     return savedSession === 'true'; // Si dice "true", arranca logueado
   });
 
   const login = () => {
-    // 2. Al loguear, guardamos en el navegador
-    localStorage.setItem('isAdmin', 'true');
+    // 2. Al loguear, guardamos con la NUEVA LLAVE
+    localStorage.setItem('thanos_is_admin', 'true'); // <--- NUEVA LLAVE
     setIsAdmin(true);
   };
 
   const logout = () => {
-    // 3. Al salir, borramos del navegador
-    localStorage.removeItem('isAdmin');
+    // 3. Al salir, borramos la NUEVA LLAVE
+    localStorage.removeItem('thanos_is_admin'); // <--- NUEVA LLAVE
     setIsAdmin(false);
   };
 

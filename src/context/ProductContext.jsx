@@ -6,39 +6,43 @@ const ProductContext = createContext();
 export const useProducts = () => useContext(ProductContext);
 
 export const ProductProvider = ({ children }) => {
-  // 1. CARGAR PRODUCTOS: Intentamos leer de localStorage primero
+  // 1. CARGAR PRODUCTOS: Usamos la NUEVA llave 'thanos_products'
+  // Al cambiar el nombre, el navegador no encontrará los datos viejos (bicis) 
+  // y cargará automáticamente la ropa del archivo data/products.js
   const [products, setProducts] = useState(() => {
-    const savedProducts = localStorage.getItem('products');
+    const savedProducts = localStorage.getItem('thanos_products'); // <--- CAMBIO DE LLAVE
     if (savedProducts) {
       return JSON.parse(savedProducts);
     }
-    // Si no hay nada guardado, usamos los iniciales y agregamos los campos extra
+    // Si no hay nada guardado, usamos los iniciales (Ropa)
     return initialProducts.map(p => ({
       ...p,
       listPrice: p.listPrice || Math.round(p.price * 1.15),
       price: p.price,
-      description: p.description || "Descripción detallada del producto. Ideal para tus aventuras en Salta con garantía oficial de Bicicletas Coki."
+      // Actualicé la descripción por defecto para que coincida con la marca
+      description: p.description || "Indumentaria oficial Thanos. Calidad premium y diseño exclusivo para tu estilo urbano en Salta."
     }));
   });
 
-  // 2. CARGAR ORDENES: Intentamos leer de localStorage
+  // 2. CARGAR ORDENES: Usamos la NUEVA llave 'thanos_orders'
+  // Esto también limpia el historial de ventas viejo
   const [orders, setOrders] = useState(() => {
-    const savedOrders = localStorage.getItem('orders');
+    const savedOrders = localStorage.getItem('thanos_orders'); // <--- CAMBIO DE LLAVE
     return savedOrders ? JSON.parse(savedOrders) : [];
   });
 
-  // 3. EFECTO: Guardar en localStorage cada vez que cambien los PRODUCTOS
+  // 3. EFECTO: Guardar en localStorage con la NUEVA llave
   useEffect(() => {
-    localStorage.setItem('products', JSON.stringify(products));
+    localStorage.setItem('thanos_products', JSON.stringify(products)); // <--- CAMBIO DE LLAVE
   }, [products]);
 
-  // 4. EFECTO: Guardar en localStorage cada vez que cambien las ORDENES
+  // 4. EFECTO: Guardar ordenes con la NUEVA llave
   useEffect(() => {
-    localStorage.setItem('orders', JSON.stringify(orders));
+    localStorage.setItem('thanos_orders', JSON.stringify(orders)); // <--- CAMBIO DE LLAVE
   }, [orders]);
 
 
-  // --- FUNCIONES (Igual que antes) ---
+  // --- FUNCIONES (Se mantienen igual) ---
   const deleteProduct = (id) => setProducts(prev => prev.filter(p => p.id !== id));
 
   const addProduct = (newProduct) => {
