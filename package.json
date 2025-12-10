@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://Matuu-prog.github.io/bicicletas-coki",
+  "homepage": "https://Matuu-prog.github.io/thanos-indu",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
